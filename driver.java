@@ -19,7 +19,7 @@ public void menue(){
             PCBinit();
                 break;
             case 2:
-             //calling method 2
+             //calling Report method
                 break;
             case 3:     
             System.out.println("Exiting the program...");
