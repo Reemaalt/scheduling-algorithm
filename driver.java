@@ -4,6 +4,9 @@ public class driver {
 
     
     public static void main(String[] args) {
+
+        driver run= new driver();
+        run.menue();
        
     }
 public void menue(){
@@ -30,6 +33,8 @@ public void menue(){
         }
         input.close();
     }
+
+    
     public ProcessControlBlock PCBinit(){
         System.out.println("Enter Procces ID:");
         int Pid = input.nextInt();
@@ -39,17 +44,9 @@ public void menue(){
         int priority =  input.nextInt();
         System.out.println("Enter CPU Burst:");
         int CpuBurst = input.nextInt();
-        System.out.println("Enter Start and termination time:");
-       int StartAndTerminationTime = input.nextInt();
-       System.out.println("Enter Turn around time:");
-         int turnaroundTime = input.nextInt();
-         System.out.println("Enter Waiting time:"); 
-         int waitingTime = input.nextInt();
-         System.out.println("Enter Response time:"); 
-         int responseTime = input.nextInt();
         
          
-        return new ProcessControlBlock(Pid,priority,arrivalTime,CpuBurst,StartAndTerminationTime,turnaroundTime,waitingTime,responseTime);
+        return new ProcessControlBlock(Pid,priority,arrivalTime,CpuBurst);
          //and then add the procces to  a Queue based on the priority
          // im changing time type from int to time
 
