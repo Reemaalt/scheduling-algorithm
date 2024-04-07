@@ -4,8 +4,6 @@ import java.util.*;
 public class driver {
 
     static final int TIME_QUANTUM = 3;
-   // static final int Q1_PRIORITY = 1;
-   // static final int Q2_PRIORITY = 2;
 
     static ProcessControlBlock[] cpuArray;
     static ProcessControlBlock[] Q1 ;
@@ -60,14 +58,15 @@ public void menue(){
         int numOfProcesses=input.nextInt();
 		cpuArray= new ProcessControlBlock[numOfProcesses];
 
-        for (int i = 0; i <=numOfProcesses; i++) {
-            System.out.println("Enter information for process " + (i + 1) + ":");
+        for (int i = 1; i <=numOfProcesses; i++) {
+            System.out.println("Enter information for process " + i + ":");
             System.out.print("Priority (1 or 2): ");
             int priority = input.nextInt();
             System.out.print("Arrival time: ");
             int arrivalTime = input.nextInt();
             System.out.print("CPU burst time: ");
             int cpuBurst = input.nextInt();
+            System.out.println("done info  P"+ i );
            
             ProcessControlBlock Process = new ProcessControlBlock(("P"+i),priority,arrivalTime,cpuBurst);
             cpuArray[i-1]= Process;           
@@ -75,7 +74,7 @@ public void menue(){
         scheduleProcesses();
     }
 
- //the scheduling !! RR & SJF
+   //the scheduling !! RR & SJF
  public void scheduleProcesses(){
  
     Arrays.sort(cpuArray, (a, b) -> a.arrivalTime - b.arrivalTime);
@@ -107,9 +106,8 @@ public void menue(){
     }//end while 
 }
 
-
     //case 2 method(report)
-    public void reportInformation() {
+public void reportInformation() {
        
         if (cpuArray == null) {
             System.out.println("\nSystem is empty\n");
@@ -118,7 +116,14 @@ public void menue(){
 
         try {
             FileWriter writer = new FileWriter("Report.txt");
-            writer.write("Scheduling order of the processes: " + order + "\n\n");
+           writer.write("Scheduling order of the processes: \n\n");
+           writer.write("[");
+            for (ProcessControlBlock process : cpuArray) {
+                writer.write(process.processID);
+                writer.write(",");
+            }
+             writer.write("]\n");
+             writer.write("----------\n");
 
             for (ProcessControlBlock process : cpuArray) {
                 writer.write("Process ID: " + process.processID + "\n");
@@ -150,23 +155,7 @@ public void menue(){
         }
     }
 
-
-public  void split(ProcessControlBlock[] all) {
-    int count1=0;
-    int count2=0;
-
-    for(ProcessControlBlock p : all){
-        if(p.priority==1)
-            count1++;
-        else if(p.priority==2)
-            count2++;
-
-    }//end foreach
-
-
-    
-}// end split
-
+    //RR & SJF here
 public void add() {
     for(int i=0 ; i<cpuArray.length ; i++) {
         ProcessControlBlock p = cpuArray[i];
@@ -291,7 +280,23 @@ public void runQ2() {
 
 }//end executeq2
 
-//Helping methods
+    //Helping methods
+public  void split(ProcessControlBlock[] all) {
+    int count1=0;
+    int count2=0;
+
+    for(ProcessControlBlock p : all){
+        if(p.priority==1)
+            count1++;
+        else if(p.priority==2)
+            count2++;
+
+    }//end foreach
+
+
+    
+}// end split
+
 public void Delete(ProcessControlBlock array[], int q, int indexToDelete) {
     if (q == 1) {
         for (int i = indexToDelete; i < q1Size - 1; i++) {

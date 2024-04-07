@@ -1,0 +1,27 @@
+[P1,P2,]
+----------
+Process ID: P1
+Priority: 1
+Arrival time: 1
+CPU burst: 5
+Start time: 1
+Termination time: 6
+Turnaround time: 5
+Waiting time: 0
+Response time: 0
+
+------------
+Process ID: P2
+Priority: 2
+Arrival time: 3
+CPU burst: 3
+Start time: 6
+Termination time: 9
+Turnaround time: 6
+Waiting time: 3
+Response time: 3
+
+------------
+Average Turnaround Time:5.5
+Average Waiting Time:1.5
+Average Response Time:1.5
