@@ -52,7 +52,7 @@ public void menue(){
     }
 
     //case 1 method
-    public void enterProcessInformation(){
+public void enterProcessInformation(){
       
         System.out.print("Enter the number of processes: ");
         int numOfProcesses=input.nextInt();
@@ -116,15 +116,15 @@ public void reportInformation() {
 
         try {
             FileWriter writer = new FileWriter("Report.txt");
-           writer.write("Scheduling order of the processes: \n\n");
-           writer.write("[");
-            for (ProcessControlBlock process : cpuArray) {
-                writer.write(process.processID);
-                writer.write(",");
+            writer.write("Scheduling order of the processes: \n\n[");
+            for (int i = 0; i < cpuArray.length; i++) {
+                writer.write(cpuArray[i].processID);
+                if (i < cpuArray.length - 1) {
+                    writer.write(" ,");
+                }
             }
-             writer.write("]\n");
-             writer.write("----------\n");
-
+            writer.write("]\n");
+            
             for (ProcessControlBlock process : cpuArray) {
                 writer.write("Process ID: " + process.processID + "\n");
                 writer.write("Priority: " + process.priority + "\n");
@@ -332,7 +332,7 @@ public void DeleteAndAdd(ProcessControlBlock array[], int q) {
         array[q1Size - 1] = firstP;	}
   
 }
-
+//do we need this ?
 public void updateOrder(ProcessControlBlock currentProcess) {
 
     if(order.length()!=0) {
