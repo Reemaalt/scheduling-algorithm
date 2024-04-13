@@ -28,7 +28,7 @@ public void menue(){
     int choice;
    do{
         System.out.println("Choose an action:");
-        System.out.println("1. Enter process’ information.");
+        System.out.println("1. Enter process, information.");
         System.out.println("2. Report detailed information about each process and different scheduling criteria.");
         System.out.println("3. Exit the program.");
         System.out.print("Enter your choice: ");
@@ -107,15 +107,54 @@ public void enterProcessInformation(){
 }
 
     //case 2 method(report)
-public void reportInformation() {
+    public void reportInformation() {
        
         if (cpuArray == null) {
             System.out.println("\nSystem is empty\n");
             return;
         }
-
+    
+        // Display scheduling order on console
+        System.out.println("Scheduling order of the processes: ");
+        System.out.print("[");
+        for (int i = 0; i < cpuArray.length; i++) {
+            System.out.print(cpuArray[i].processID);
+            if (i < cpuArray.length - 1) {
+                System.out.print(" ,");
+            }
+        }
+        System.out.println("]\n");
+    
+        // Display detailed information about each process on console
+        System.out.println("Detailed information about each process:");
+    
+        for (ProcessControlBlock process : cpuArray) {
+            System.out.println("Process ID: " + process.processID);
+            System.out.println("Priority: " + process.priority);
+            System.out.println("Arrival time: " + process.arrivalTime);
+            System.out.println("CPU burst: " + process.cpuBurst);
+            System.out.println("Start time: " + process.startTime);
+            System.out.println("Termination time: " + process.terminationTime);
+            System.out.println("Turnaround time: " + process.turnaroundTime);
+            System.out.println("Waiting time: " + process.waitingTime);
+            System.out.println("Response time: " + process.responseTime);
+            System.out.println("------------");
+        }
+    
+        // Calculating and displaying average turnaround time, waiting time, and response time
+        double avgTurnaroundTime = Arrays.stream(cpuArray).mapToInt(p -> p.turnaroundTime).average().orElse(0);
+        double avgWaitingTime = Arrays.stream(cpuArray).mapToInt(p -> p.waitingTime).average().orElse(0);
+        double avgResponseTime = Arrays.stream(cpuArray).mapToInt(p -> p.responseTime).average().orElse(0);
+    
+        System.out.println("Average Turnaround Time: " + avgTurnaroundTime);
+        System.out.println("Average Waiting Time: " + avgWaitingTime);
+        System.out.println("Average Response Time: " + avgResponseTime);
+    
+        // Write all information to the output file
         try {
             FileWriter writer = new FileWriter("Report.txt");
+            
+            // Write scheduling order to file
             writer.write("Scheduling order of the processes: \n\n[");
             for (int i = 0; i < cpuArray.length; i++) {
                 writer.write(cpuArray[i].processID);
@@ -123,8 +162,9 @@ public void reportInformation() {
                     writer.write(" ,");
                 }
             }
-            writer.write("]\n");
-            
+            writer.write("]\n\n");
+    
+            // Write detailed information about each process to file
             for (ProcessControlBlock process : cpuArray) {
                 writer.write("Process ID: " + process.processID + "\n");
                 writer.write("Priority: " + process.priority + "\n");
@@ -137,24 +177,21 @@ public void reportInformation() {
                 writer.write("Response time: " + process.responseTime + "\n\n");
                 writer.write("------------\n");
             }
-
-            double avgTurnaroundTime = Arrays.stream(cpuArray).mapToInt(p -> p.turnaroundTime).average().orElse(0);
-            double avgWaitingTime = Arrays.stream(cpuArray).mapToInt(p -> p.waitingTime).average().orElse(0);
-            double avgResponseTime = Arrays.stream(cpuArray).mapToInt(p -> p.responseTime).average().orElse(0);
-
-            writer.write("Average Turnaround Time:" + avgTurnaroundTime + "\n");
-            writer.write("Average Waiting Time:" + avgWaitingTime + "\n");
-            writer.write("Average Response Time:" + avgResponseTime + "\n");
-
+    
+            // Write average turnaround time, waiting time, and response time to file
+            writer.write("Average Turnaround Time: " + avgTurnaroundTime + "\n");
+            writer.write("Average Waiting Time: " + avgWaitingTime + "\n");
+            writer.write("Average Response Time: " + avgResponseTime + "\n");
+    
             writer.close();
-
-            System.out.println("Report written to Report.txt");
+    
+            System.out.println("\nReport written to Report.txt");
         } catch (IOException e) {
             System.out.println("An error occurred while writing the report.");
             e.printStackTrace();
         }
     }
-
+    
     //RR & SJF here
 public void add() {
     for(int i=0 ; i<cpuArray.length ; i++) {
@@ -192,7 +229,7 @@ public void runQ1() {
 
     /////////////////////////////////
     ProcessControlBlock nextP=null;
-    try {
+   
         nextP=Q1[1];
 
     
@@ -202,10 +239,8 @@ public void runQ1() {
             currentP=nextP;
         }//end if
         
-    }
-    catch(Exception e) {
-        System.out.println("erorr1");
-    }
+    
+    
     ////////////////////////////////
 
     updateOrder(currentP);
