@@ -1,0 +1,40 @@
+Scheduling order of the processes: 
+
+[P1 ,P2 ,P3]
+
+Process ID: P1
+Priority: 1
+Arrival time: 0
+CPU burst: 8
+Start time: 0
+Termination time: 14
+Turnaround time: 14
+Waiting time: 6
+Response time: 0
+
+------------
+Process ID: P2
+Priority: 1
+Arrival time: 1
+CPU burst: 7
+Start time: 3
+Termination time: 15
+Turnaround time: 14
+Waiting time: 7
+Response time: 2
+
+------------
+Process ID: P3
+Priority: 2
+Arrival time: 3
+CPU burst: 3
+Start time: 15
+Termination time: 18
+Turnaround time: 15
+Waiting time: 12
+Response time: 12
+
+------------
+Average Turnaround Time: 14.333333333333334
+Average Waiting Time: 8.333333333333334
+Average Response Time: 4.666666666666667

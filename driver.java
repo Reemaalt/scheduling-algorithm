@@ -222,60 +222,55 @@ public void add() {
 }//end add
 
 public void runQ1() {
+    q2Currentindex = -1;
 
-    q2Currentindex=-1;
+    if (q1Size < 1) {
+        // No process in Q1 to execute
+        return;
+    }
 
-    ProcessControlBlock currentP=Q1[0];
+    ProcessControlBlock currentP = Q1[0];
 
-    /////////////////////////////////
-    ProcessControlBlock nextP=null;
-   
-        nextP=Q1[1];
+    if (q1Size > 1) {
+        ProcessControlBlock nextP = Q1[1];
 
-    
-        if((currentP.lastTimeMovedInQueue >=nextP.lastTimeMovedInQueue) && (nextP.rem == nextP.cpuBurst) && (currentP.rem != currentP.cpuBurst)) {
-            Q1[0]=nextP;
-            Q1[1]=currentP;
-            currentP=nextP;
-        }//end if
-        
-    
-    
-    ////////////////////////////////
+        if (currentP.lastTimeMovedInQueue >= nextP.lastTimeMovedInQueue &&
+            nextP.rem == nextP.cpuBurst &&
+            currentP.rem != currentP.cpuBurst) {
+            
+            // Swap processes in Q1 if the condition is met
+            Q1[0] = nextP;
+            Q1[1] = currentP;
+            currentP = nextP;
+        }
+    }
 
     updateOrder(currentP);
 
-
-    //first time for the process
-    if(currentP.cpuBurst==currentP.rem) {
-        currentP.startTime=currentTime;
-
+    // Record the start time if this is the first time the process is executed
+    if (currentP.startTime == -1) {
+        currentP.startTime = currentTime;
     }
 
-    if(currentP.rem<=TIME_QUANTUM) {
-
-        currentTime+=currentP.rem;
+    if (currentP.rem <= TIME_QUANTUM) {
+        // Process finishes within the quantum
+        currentTime += currentP.rem;
         add();
-        currentP.terminationTime=currentTime;
-        currentP.turnaroundTime=currentP.terminationTime-currentP.arrivalTime;
-        currentP.waitingTime=currentP.turnaroundTime-currentP.cpuBurst;
-        currentP.rem=0;
-        currentP.responseTime=currentP.startTime-currentP.arrivalTime;
-        Delete(Q1, 1,0);
-
-    }//end if rem<QT
-
-    else {
-        currentP.rem=currentP.rem-TIME_QUANTUM;
-        currentTime+=TIME_QUANTUM;
+        currentP.terminationTime = currentTime;
+        currentP.turnaroundTime = currentP.terminationTime - currentP.arrivalTime;
+        currentP.waitingTime = currentP.turnaroundTime - currentP.cpuBurst;
+        currentP.rem = 0;
+        currentP.responseTime = currentP.startTime - currentP.arrivalTime;
+        Delete(Q1, 1, 0); // Remove the completed process from Q1
+    } else {
+        // Process uses up its time quantum
+        currentP.rem -= TIME_QUANTUM;
+        currentTime += TIME_QUANTUM;
         add();
-        currentP.lastTimeMovedInQueue=currentTime;
-        DeleteAndAdd(Q1, 1);
-
-
-    } 
-
-}//end execute
+        currentP.lastTimeMovedInQueue = currentTime;
+        DeleteAndAdd(Q1, 1); // Move the current process to the end of Q1
+    }
+}
 
 public void runQ2() {
 
