@@ -245,7 +245,6 @@ public void runQ1() {
         }
     }
 
-    updateOrder(currentP);
 
     // Record the start time if this is the first time the process is executed
     if (currentP.startTime == -1) {
@@ -362,24 +361,6 @@ public void DeleteAndAdd(ProcessControlBlock array[], int q) {
         array[q1Size - 1] = firstP;	}
   
 }
-//do we need this ?
-public void updateOrder(ProcessControlBlock currentProcess) {
-
-    if(order.length()!=0) {
-
-        String trimmedOrder = order.endsWith(",") ? order.substring(0, order.length() - 1) : order;
-
-        String[] items = trimmedOrder.split(",");
-
-        if (items.length == 0 || !items[items.length - 1].equals(currentProcess.processID)) {
-            order += currentProcess.processID + ",";
-        } 
-    }
-    else {
-            order+=currentProcess.processID+",";
-         }
-
-} 
 
 public boolean checkEmpty() {
     
