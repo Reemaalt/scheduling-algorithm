@@ -108,22 +108,20 @@ public void enterProcessInformation(){
 
     //case 2 method(report)
     public void reportInformation() {
-       
+        String output="";
+
+    
         if (cpuArray == null) {
             System.out.println("\nSystem is empty\n");
             return;
         }
-    
+    else{
+        
         // Display scheduling order on console
         System.out.println("Scheduling order of the processes: ");
-        System.out.print("[");
-        for (int i = 0; i < cpuArray.length; i++) {
-            System.out.print(cpuArray[i].processID);
-            if (i < cpuArray.length - 1) {
-                System.out.print(" ,");
-            }
-        }
-        System.out.println("]\n");
+        output += "\n\n[" + order.substring(0, order.length() - 1) + "]\n----------\n";
+
+        System.out.println(output);
     
         // Display detailed information about each process on console
         System.out.println("Detailed information about each process:");
@@ -153,18 +151,13 @@ public void enterProcessInformation(){
         // Write all information to the output file
         try {
             FileWriter writer = new FileWriter("Report.txt");
-            
+    
             // Write scheduling order to file
-            writer.write("Scheduling order of the processes: \n\n[");
-            for (int i = 0; i < cpuArray.length; i++) {
-                writer.write(cpuArray[i].processID);
-                if (i < cpuArray.length - 1) {
-                    writer.write(" ,");
-                }
-            }
-            writer.write("]\n\n");
+            writer.write("Scheduling order of the processes: \n");
+            writer.write(output);
     
             // Write detailed information about each process to file
+            writer.write("Detailed information about each process:\n");
             for (ProcessControlBlock process : cpuArray) {
                 writer.write("Process ID: " + process.processID + "\n");
                 writer.write("Priority: " + process.priority + "\n");
@@ -191,9 +184,10 @@ public void enterProcessInformation(){
             e.printStackTrace();
         }
     }
-    
+    }
+
     //RR & SJF here
-public void add() {
+public  void add() {
     for(int i=0 ; i<cpuArray.length ; i++) {
         ProcessControlBlock p = cpuArray[i];
 
@@ -202,6 +196,9 @@ public void add() {
 
             break;
         }
+
+
+
 
         if(p.arrivalTime<=currentTime && !p.isInQueue ) {
 
@@ -219,9 +216,10 @@ public void add() {
         }//end if
     }//end for
 
-}//end add
+}//end addToQ1
 
 public void runQ1() {
+   
     q2Currentindex = -1;
 
     if (q1Size < 1) {
@@ -244,13 +242,13 @@ public void runQ1() {
             currentP = nextP;
         }
     }
-
+    updateOrder(currentP);
 
     // Record the start time if this is the first time the process is executed
     if (currentP.startTime == -1) {
         currentP.startTime = currentTime;
     }
-
+    
     if (currentP.rem <= TIME_QUANTUM) {
         // Process finishes within the quantum
         currentTime += currentP.rem;
@@ -261,6 +259,7 @@ public void runQ1() {
         currentP.rem = 0;
         currentP.responseTime = currentP.startTime - currentP.arrivalTime;
         Delete(Q1, 1, 0); // Remove the completed process from Q1
+    
     } else {
         // Process uses up its time quantum
         currentP.rem -= TIME_QUANTUM;
@@ -294,6 +293,7 @@ public void runQ2() {
 
     currentTime++;
 
+
     if(current.rem==1) {
 
         current.terminationTime=currentTime;
@@ -306,6 +306,7 @@ public void runQ2() {
     }
 
     current.rem=current.rem-1;
+    updateOrder(current);
 
 }//end executeq2
 
@@ -384,5 +385,24 @@ public int findShortest(ProcessControlBlock[] q) {
 
     return shortest;
 }//end find shortest
+
+ public void updateOrder(ProcessControlBlock currentProcess) {
+
+    if(order.length()!=0) {
+
+        String trimmedOrder = order.endsWith(",") ? order.substring(0, order.length() - 1) : order;
+
+        String[] items = trimmedOrder.split("\\|");
+
+        if (items.length == 0 || !items[items.length - 1].equals(currentProcess.processID)) {
+            order += currentProcess.processID + "|";
+        } 
+    }
+    else {
+            order+=currentProcess.processID+"|";
+         }
+
+} 
+
 
 }
