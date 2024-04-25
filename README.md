@@ -1,2 +1,0 @@
-# scheduling-algorithm-
-os project
